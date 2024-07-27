@@ -26,5 +26,27 @@ pipeline{
             }
         }
 
+        stage('build'){
+            steps{
+               sh 'mvn clean install'
+
+            }
+        }
+
+        stage('buildimage'){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker') {
+                        sh "docker -t santa ."
+                        sh "docker tag santa liki27/santa:latest"
+                        sh "docker push liki27/santa:latest"
+                    }
+
+                }
+               
+
+            }
+        }
+
     }
 }
