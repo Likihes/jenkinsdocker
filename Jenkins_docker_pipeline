@@ -4,7 +4,8 @@ pipeline{
         maven 'maven'
     }
     environment {
-        DOCKER_PASSWORD_ID = 'dockerhubpswd'  // The ID of the credentials you created
+        DOCKERHUB_REPO = 'liki27/java-webapp-docker'
+        DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credentials'  // The ID of the credentials you created
     }
     
     stages{
@@ -38,17 +39,22 @@ pipeline{
 
         stage("Build Docker_Images"){
             steps{
-                sh 'docker build -t lik27/java-webapp-docker:1 .'
+                script {
+                    def imageName = "${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}"
+                    sh "docker build -t ${imageName} ."
+                }
             }
         }
 
         stage("Docker login and push"){
-            steps{
-                withCredentials([string(credentialsId: 'env.DOCKER_PASSWORD_ID', variable: 'dockerhubpswd')]){
-                    sh 'docker login -u liki27 -p $(env.DOCKER_PASSWORD_ID) --password-stdin'
+            steps {
+                withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS_ID, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]){
+                    script {
+                        sh "echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin"
+                        def imageName = "${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}"
+                        sh "docker push ${imageName}"
+                    }
                 }
-                sh 'docker push lik27/java-webapp-docker:1'
-            }
         }
         
     }
