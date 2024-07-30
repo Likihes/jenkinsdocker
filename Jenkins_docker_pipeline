@@ -3,6 +3,10 @@ pipeline{
     tools{
         maven 'maven'
     }
+    environment{
+       BUILDNUMBER= "$(env.BUILD_NUMBER)"
+       
+    }
     stages{
         stage("git checkout"){
             steps{
@@ -25,11 +29,17 @@ pipeline{
                 }
             }
         }
-        stage("Build"){
+        stage("Build War"){
             steps{
                 sh 'mvn clean package'
             }
 
+        }
+
+        stage("Build Docker_Images"){
+            steps{
+                sh 'docker build -t lik27/java-webapp-docker:1 .'
+            }
         }
         
     }
