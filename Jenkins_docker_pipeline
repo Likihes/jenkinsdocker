@@ -63,9 +63,10 @@ pipeline{
             steps{
                 sshagent(['Docker_ssh']) {
                     script{
-                    def contanerName = "${env.CONTAINER_NAME}"
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker rm -f ${contanerName} || true"
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker run -d -p 8080:8080 --name ${contanerName} ${imageName}"
+                         def imageName = "${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}"
+                         def contanerName = "${env.CONTAINER_NAME}"
+                         sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker rm -f ${contanerName} || true"
+                         sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker run -d -p 8080:8080 --name ${contanerName} ${imageName}"
                     }
                 }
             }
