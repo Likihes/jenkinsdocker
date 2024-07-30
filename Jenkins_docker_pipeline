@@ -61,11 +61,14 @@ pipeline{
 
         stage("deploy container") {
             steps {
+                 withCredentials([usernamePassword(credentialsId: env.DOCKERHUB_CREDENTIALS_ID, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]){
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
+                 }
                 sshagent(['Docker_ssh']) {
                     script {
                         def imageName = "${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}"
                         def containerName = "${env.CONTAINER_NAME}"
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
+                        
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker rm -f ${containerName} || true"
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker run -d -p 8080:8080 --name ${containerName} ${imageName}"
                      }
