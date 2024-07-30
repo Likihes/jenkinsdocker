@@ -12,7 +12,7 @@ pipeline{
     stages{
         stage("git checkout"){
             steps{
-              checkout scmGit(branches: [[name: '*/master']], 
+              checkout scmGit(branches: [[name: '*/feature']], 
               userRemoteConfigs: [[url: 'https://github.com/Likihes/java-web-app-docker.git']])
             }
         }
