@@ -1,0 +1,30 @@
+pipeline{
+    stages{
+        stage{
+            checkout scmGit(branches: [[name: '*/master']], 
+            userRemoteConfigs: [[url: 'https://github.com/Likihes/java-web-app-docker.git']])
+            
+        }
+    }
+    stages{
+        stage{
+            
+        }
+    }
+    stages{
+        stage{
+            
+        }
+    }
+    stages{
+        stage{
+            
+        }
+    }
+    stages{
+        stage{
+            
+        }
+    }
+
+}
