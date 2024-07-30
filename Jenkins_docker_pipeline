@@ -12,13 +12,13 @@ pipeline{
         }
         stage("Test_Parallel"){
             parallel{
-                stage("junit_test"){
+                stage("complile"){
                     steps{
-                        sh 'mvn clean test'
+                        sh 'mvn clean compile'
                     }
                 }
 
-                stage("integration_test"){
+                stage("junit_testS"){
                     steps{
                         sh 'mvn clean test'
                     }
