@@ -6,6 +6,7 @@ pipeline{
     environment {
         DOCKERHUB_REPO = 'liki27/java-webapp-docker'
         DOCKERHUB_CREDENTIALS_ID = 'dockerhub_credentials'  // The ID of the credentials you created
+        CONTAINER_NAME = 'javawebappcontainer'
     }
     
     stages{
@@ -61,8 +62,9 @@ pipeline{
         stage("deploy container"){
             steps{
                 sshagent(['Docker_ssh']) {
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker rm -f javawebappcontainer || true'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker run -d -p 8080:8080 --name javawebappcontainer ${imageName}'
+                    def contanerName = "${env.CONTAINER_NAME}"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker rm -f ${contanerName} || true"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker run -d -p 8080:8080 --name ${contanerName} ${imageName}"
                 }
             }
         }
