@@ -55,9 +55,10 @@ pipeline{
                         sh "docker push ${imageName}"
                     }
                 }
+            }
         }
-        
+
     }
-    
 }
+
 
