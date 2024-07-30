@@ -65,7 +65,6 @@ pipeline{
                     script {
                         def imageName = "${env.DOCKERHUB_REPO}:${env.BUILD_NUMBER}"
                         def containerName = "${env.CONTAINER_NAME}"
-                        sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker rm -f ${containerName} || true"
                         sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.12.116 docker run -d -p 8080:8080 --name ${containerName} ${imageName}"
                      }
