@@ -41,8 +41,8 @@ pipeline{
 
         stage("Docker login and push"){
             steps{
-                withDockerRegistry(credentialsId: '37f1be64-b016-436a-ab0d-96c7bbe2061e')  {
-                    sh 'docker login -u liki27 -p $(dcredentialsId)'
+                withCredentials([string(credentialsId: 'dockerhubpswd', variable: 'dockerhubpswd')]){
+                    sh 'docker login -u liki27 -p $(dockerhubpswd)'
                 }
                 sh 'docker push lik27/java-webapp-docker:1'
             }
