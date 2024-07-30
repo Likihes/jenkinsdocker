@@ -10,6 +10,23 @@ pipeline{
               userRemoteConfigs: [[url: 'https://github.com/Likihes/java-web-app-docker.git']])
             }
         }
+        stage("Test_Parallel"){
+            parallel{
+                stage("junit_test"){
+                    steps{
+                        sh 'mvn clean test'
+                    }
+                }
+
+                stage("integration_test"){
+                    steps{
+                        sh 'mvn clean test'
+                    }
+                }     
+
+            }
+        }
+        
     }
     
 }
