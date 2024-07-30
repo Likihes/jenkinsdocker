@@ -3,10 +3,7 @@ pipeline{
     tools{
         maven 'maven'
     }
-    environment{
-       BUILDNUMBER= "$(env.BUILD_NUMBER)"
-       
-    }
+    
     stages{
         stage("git checkout"){
             steps{
