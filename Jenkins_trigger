@@ -1,21 +1,12 @@
 pipeline {
     agent any
 
-    triggers {
-        githubPush()
-    }
 
     stages {
         stage('Git Clone') {
             steps {
-                git url: 'https://github.com/Likihes/java-web-app-docker.git', branch: 'feature'
+                checkout scmGit(branches: [[name: '*/feature']], extensions: [], userRemoteConfigs: [[credentialsId: '37f1be64-b016-436a-ab0d-96c7bbe2061e', url: 'https://github.com/Likihes/java-web-app-docker.git']])
             }
-        }
-    }
-
-    stage('list files'){
-        steps{
-            sh "ls -lrt"
         }
     }
 }
